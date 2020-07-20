@@ -9,8 +9,18 @@ function dx = Dif_Eq_framework(t,x)
 %x(6) = Exposed Known
 %x(7) = Infected Known
 %x(8) = Recovered Known
+%x(9) = Susceptibles with infectious contact
+%x(10)= Recovered with infectious contact
+%x(11)= a, Total number of time changes
+%x(12)= b, Total number of control conditions
+%x(13)--x(13+a)= Time conditions
+%x(13+a)--x(13+a+b)= control condition
+%x(11) to x(13+a+b) allow us to include timers on our controls.
 
-u=5;
+L=length(x);
+a=x(11);
+b=x(12);
+
 v=zeros(9,1); %intiialize testing rates
     v(1) = 0.1; %beta,transmission rate per day
     v(2) = 0.1; %c, average contacts per day
@@ -22,14 +32,9 @@ v=zeros(9,1); %intiialize testing rates
     v(8) = 0.1; %eta, success rate of tracing
     v(9) = 0.1; %chi, tracing rate    
 
-p=zeros(4,1); %# of people with recent infectious contacts
-    p(1)=x(9); %Susceptible 
-    p(2)=x(2); %Exposed
-    p(3)=x(3); %Infected 
-    p(4)=x(10); %Recovered 
 
 N = sum(x);
-dx=zeros(10,1);
+dx=zeros(L,1);
 
 dx(1) =-v(3)*x(2)*x(3)/N +v(7)*x(8)... %Susceptible Unknown
        -v(6)*v(8)*v(9)*x(9);   %contact tracing prob.

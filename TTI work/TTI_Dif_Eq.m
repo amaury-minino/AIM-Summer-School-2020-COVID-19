@@ -11,15 +11,27 @@ function dx = Dif_Eq_framework(t,x)
 %x(8) = Recovered Known
 %x(9) = Susceptibles with infectious contact
 %x(10)= Recovered with infectious contact
-%x(11)= a, Total number of time changes
-%x(12)= b, Total number of control conditions
-%x(13)--x(13+a)= Time conditions
-%x(13+a)--x(13+a+b)= control condition
-%x(11) to x(13+a+b) allow us to include timers on our controls.
+%x(11)= a, Total number of time conditions
+%x(12)--x(12+a-1)= Time Controls
+%x(12+a)--x(12+2a-1)= Testing control conditions
+%x(12+2a)--x(12+3a-1)= Tracing control conditions
+%x(12) to x(12+3a-1) allow us to include timers on our controls.
 
 L=length(x);
-a=x(11);
-b=x(12);
+a=x(11); %number of time changes
+utest=0
+utrace=0
+for i=0:a-1
+    tswitch= x(12+i);
+    if t <tswitch
+        break
+    else
+       utest=x(12+a +i);
+       utrace=x(12+2a+i);
+    end
+end
+
+
 
 v=zeros(9,1); %intiialize testing rates
     v(1) = 0.1; %beta,transmission rate per day
@@ -27,9 +39,9 @@ v=zeros(9,1); %intiialize testing rates
     v(3) = 0.1; %beta, average infections per day
     v(4) = 0.1; %alpha, progression rate (exposed to infected)
     v(5) = 0.02; %gamma, disease recovery rate
-    v(6) = 0.02; %theta, the testing rate of infectives
+    v(6) = utest; %theta, the testing rate of infectives
     v(7) = 0.03; %kappa, the rate non-infect leave isolation      
-    v(8) = 0.1; %eta, success rate of tracing
+    v(8) = utrace; %eta, success rate of tracing
     v(9) = 0.1; %chi, tracing rate    
 
 

@@ -19,15 +19,17 @@ function dx = Dif_Eq_framework(t,x)
 
 L=length(x);
 a=x(11); %number of time changes
-utest=0
-utrace=0
-for i=0:a-1
-    tswitch= x(12+i);
-    if t <tswitch
-        break
-    else
-       utest=x(12+a +i);
-       utrace=x(12+2a+i);
+utest=0;
+utrace=0;
+if a~=0
+    for i=0:a-1
+        tswitch= x(12+i);
+        if t <tswitch
+            break
+        else
+            utest=x(12+a+i);
+            utrace=x(12+2a+i);
+        end
     end
 end
 

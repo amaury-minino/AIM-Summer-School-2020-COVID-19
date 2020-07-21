@@ -3,14 +3,14 @@ clear; clc; close all;
 %% Set parameter
 
 t0 = 0;
-tf = 1000;
+tf = 100;
 
 %% Initialize
 
-IC=[99 1 0 0.1 150]; % S I u tswitch
+IC=[99 1 0 0 150]; % S I u tswitch
 % N determined in odesystem
 
-Ffun = @odesystem_test;
+Ffun = @odesystem0717;
 
 %% Run Simulation
 

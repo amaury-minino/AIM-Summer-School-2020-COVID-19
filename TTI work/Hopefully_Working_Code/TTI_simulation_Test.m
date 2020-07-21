@@ -3,10 +3,10 @@ clear; clc; close all;
 %% Set parameter
 
 t0 = 0;
-tf = 1000;
+tf = 100;
 
 %% Initialize
-unknown=[99 0 1 0]; %S E I R
+unknown=[99 1]; %S E I R
 known=[0 0 0 0]; %S E I R
 contact_trace=[0 0]; %S R
 a= 1;
@@ -22,7 +22,7 @@ Ffun = @TTI_Dif_Eq;
 %% Run Simulation
 
 Time= t0:0.01:tf;
-[t,y]=ode45(Ffun,Time,IC);
+[t,y]=ode45(Ffun,Time,unknown);
 
 %% Plot Results
 

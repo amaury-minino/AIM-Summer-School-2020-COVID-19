@@ -17,7 +17,7 @@ function dx = TTI_Dif_Eq(t,x)
 %x(12+2a)--x(12+3a-1)= Tracing control conditions
 %x(12) to x(12+3a-1) allow us to include timers on our controls.
 
-%L=length(x);
+L=length(x);
 % a=x(11); %number of time changes
  utest=0;
  utrace=0;
@@ -47,19 +47,19 @@ v=zeros(9,1); %intiialize testing rates
     v(9) = 0.1; %chi, tracing rate    
 
 N=0;
-for i=1:2
+for i=1:L
     N=N+x(i);
 end
 
-dx=zeros(2,1);
+dx=zeros(L,1);
 
-dx(1) =-v(3)*x(1)*x(2)/N +v(4)*x(2); %+v(7)*x(5)... %Susceptible Unknown
+dx(1) =-v(3)*x(1)*x(3)/N +v(5)*x(3); %+v(7)*x(5)... %Susceptible Unknown
        %-v(6)*v(8)*v(9)*x(9);   %contact tracing prob.
    
-dx(2) = v(3)*x(1)*x(2)/N - v(4)*x(2); %... %Exposed Unknown
+dx(2) = v(3)*x(1)*x(3)/N - v(4)*x(2); %... %Exposed Unknown
        %-v(6)*v(8)*v(9)*x(2);   %contact tracing prob.
    
-%dx(3) = v(4)*x(2) - v(5)*x(3) ; %- v(6)*x(3)... %Infected Unknown
+dx(3) = v(4)*x(2) - v(5)*x(3) ; %- v(6)*x(3)... %Infected Unknown
        %-v(6)*v(8)*v(9)*x(3);   %contact tracing prob.
 
 %dx(4) =v(5)*x(3) ;% +v(7)*x(8)... %Recovered Unknown

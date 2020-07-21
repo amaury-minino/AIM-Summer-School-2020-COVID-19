@@ -3,10 +3,10 @@ clear; clc; close all;
 %% Set parameter
 
 t0 = 0;
-tf = 100;
+tf = 200;
 
 %% Initialize
-unknown=[99 1]; %S E I R
+unknown=[99 0 1]; %S E I R
 known=[0 0 0 0]; %S E I R
 contact_trace=[0 0]; %S R
 a= 1;

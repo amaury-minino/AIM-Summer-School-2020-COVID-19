@@ -19,7 +19,7 @@ function dx = TTI_Dif_Eq(t,x)
 
 L=length(x);
 % a=x(11); %number of time changes
- utest=0;
+ utest=0.05;
  utrace=0;
 % if a~=0
 %     for i=0:a-1
@@ -42,7 +42,7 @@ v=zeros(9,1); %intiialize testing rates
     v(4) = 0.1; %alpha, progression rate (exposed to infected)
     v(5) = 0.1; %gamma, disease recovery rate
     v(6) = utest; %theta, the testing rate of infectives
-    v(7) = 0.03; %kappa, the rate non-infect leave isolation      
+    v(7) = 0.1; %kappa, the rate non-infect leave isolation      
     v(8) = utrace; %eta, success rate of tracing
     v(9) = 0.1; %chi, tracing rate    
 
@@ -53,16 +53,25 @@ end
 
 dx=zeros(L,1);
 
-dx(1) =-v(3)*x(1)*x(3)/N +v(5)*x(3); %+v(7)*x(5)... %Susceptible Unknown
-       %-v(6)*v(8)*v(9)*x(9);   %contact tracing prob.
+dx(1)... % Susceptible Unknown
+    =-v(3)*x(1)*x(3)/N;   %beta*S*I/N, general infection term     
+    %+ v(7)*x(5)    %isolated susceptibles return
+    %-v(6)*v(8)*v(9)*x(9);   %contact tracing term.
    
-dx(2) = v(3)*x(1)*x(3)/N - v(4)*x(2); %... %Exposed Unknown
+dx(2)... %Exposed Unknown
+    = v(3)*x(1)*x(3)/N...   %beta*S*I/N      
+    - v(4)*x(2); %exposed to Infectious       
        %-v(6)*v(8)*v(9)*x(2);   %contact tracing prob.
    
-dx(3) = v(4)*x(2) - v(5)*x(3) ; %- v(6)*x(3)... %Infected Unknown
+dx(3)... %Infected Unknown
+    = v(4)*x(2)... %Exposed to infectious    
+      - v(5)*x(3)... %Recovery rate      
+      - v(6)*x(3); %testing infectives      
        %-v(6)*v(8)*v(9)*x(3);   %contact tracing prob.
 
-%dx(4) =v(5)*x(3) ;% +v(7)*x(8)... %Recovered Unknown
+dx(4)...%Recovered Unknown
+    =v(5)*x(3)... %recovery rate        
+    +v(7)*x(8);   %isolated recovered return
       %-v(6)*v(8)*v(9)*x(1);   %contact tracing prob.
   
 % dx(5) = -v(7)*x(5)... %Susceptible Known
@@ -71,10 +80,15 @@ dx(3) = v(4)*x(2) - v(5)*x(3) ; %- v(6)*x(3)... %Infected Unknown
 % dx(6) = -v(4)*x(6)... %Exposed Known
 %         +v(6)*v(8)*v(9)*x(2);   %contact tracing prob.
 % 
-% dx(7) = v(6)*x(3)+ v(4)*x(6) - v(5)*x(7)... %Infected Known
+ dx(7)...%Infected Known
+        = v(6)*x(3) %Testing infectives      
+        %+ v(4)*x(6)... %exposed to infective while isolated
+        - v(5)*x(7); %disease recovery while isolated       
 %        +v(6)*v(8)*v(9)*x(2);   %contact tracing prob.
 % 
-% dx(8) = v(5)*x(7) -v(7)*x(8)... %Recovered Known
+ dx(8)...%Recovered Known 
+        = v(5)*x(7)... %recovered infectives     
+         -v(7)*x(8);   %leaving isolation      
 %        +v(6)*v(8)*v(9)*x(2);   %contact tracing prob.
    
 % dx(9) =(1-v(3))*v(2)*x(1)*x(3) ... %Susceptible contacts traced
@@ -83,6 +97,6 @@ dx(3) = v(4)*x(2) - v(5)*x(3) ; %- v(6)*x(3)... %Infected Unknown
 %    
 % dx(10)=v(2)*x(3)*x(4) + v(5)*x(3) ... %Recovered contacts traced
 %       -(v(3)+v(8)*v(6)*v(9))*x(1);
-
+clc
 
 end

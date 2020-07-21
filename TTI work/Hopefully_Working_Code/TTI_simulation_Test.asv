@@ -6,7 +6,7 @@ t0 = 0;
 tf = 200;
 
 %% Initialize
-unknown=[99 0 1 0 0 0 0 0]; %S E I R
+unknown=[99 0 1]; %S E I R
 known=[0 0 0 0]; %S E I R
 contact_trace=[0 0]; %S R
 a= 1;
@@ -27,12 +27,8 @@ Time= t0:0.01:tf;
 %% Plot Results
 
 figure(1)
-plot(t,y(:,1) +y(:,5),'-ob')
+plot(t,y(:,1),'-ob')
 hold on
-plot(t,y(:,2) + y(:,6),'-or')
-hold on
-plot(t,y(:,3)+y(:,7),'-og')
-hold on
-plot(t,y(:,4)+y(:,8),'-oy')
-legend('Susceptible', 'Exposed', 'Infected', 'Recovered')
+plot(t,y(:,2),'-or')
+legend('Susceptible', 'Infected')
 xlim([t0 tf])

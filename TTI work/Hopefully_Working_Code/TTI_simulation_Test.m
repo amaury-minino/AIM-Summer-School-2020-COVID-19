@@ -6,7 +6,7 @@ t0 = 0;
 tf = 100;
 
 %% Initialize
-unknown=[97 1 2 0 0 0 0 0]; %S E I R
+unknown=[98 1 1 0 0 0 0 0 0 0]; %S E I R
 known=[0 0 0 0]; %S E I R
 contact_trace=[0 0]; %S R
 a= 1;

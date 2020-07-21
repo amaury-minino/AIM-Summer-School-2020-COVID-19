@@ -3,10 +3,10 @@ clear; clc; close all;
 %% Set parameter
 
 t0 = 0;
-tf = 200;
+tf = 250;
 
 %% Initialize
-unknown=[99 0 1]; %S E I R
+unknown=[0 0 0 0 0  0 0]; %S E I R
 known=[0 0 0 0]; %S E I R
 contact_trace=[0 0]; %S R
 a= 1;
@@ -27,8 +27,50 @@ Time= t0:0.01:tf;
 %% Plot Results
 
 figure(1)
+subplot(4,2,1)
 plot(t,y(:,1),'-ob')
 hold on
-plot(t,y(:,2),'-or')
-legend('Susceptible', 'Infected')
+title('Susceptible U')
+xlim([t0 tf])
+
+subplot(4,2,2)
+plot(t,y(:,5),'-ob')
+hold on
+title('Susceptible Ks')
+xlim([t0 tf])
+
+subplot(4,2,3)
+plot(t,y(:,2) ,'-or')
+hold on
+title('Exposed U')
+xlim([t0 tf])
+
+subplot(4,2,4)
+plot(t, y(:,6),'-or')
+hold on
+title('Exposed K')
+xlim([t0 tf])
+
+subplot(4,2,5)
+plot(t,y(:,3),'-og')
+hold on
+title('Infected U')
+xlim([t0 tf])
+
+subplot(4,2,6)
+plot(t,y(:,7),'-og')
+hold on
+title('Infected K')
+xlim([t0 tf])
+
+subplot(4,2,7)
+plot(t,y(:,4),'-oy')
+hold on
+title('Recovered U')
+xlim([t0 tf])
+
+subplot(4,2,8)
+plot(t,y(:,8),'-oy')
+hold on
+title('Recovered K')
 xlim([t0 tf])

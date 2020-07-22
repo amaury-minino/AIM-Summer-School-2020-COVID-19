@@ -3,16 +3,16 @@ clear; clc; close all;
 %% Set parameter
 
 t0 = 0;
-tf = 100;
+tf = 200;
 
 %% Initialize
-unknown=[98 1 1 0 0 0 0 0 0 0]; %S E I R
+unknown=[1000 1 1 0 ]; %S E I R
 known=[0 0 0 0]; %S E I R
 contact_trace=[0 0]; %S R
-a= 1;
-time=[1];
-test=[0];
-trace=[0];
+a= 2;
+time=[50 100];
+test=[0.1 0.2];
+trace=[0.2  0.3];
 
 IC=[unknown known contact_trace a time test trace]; % S I u tswitch
 % N determined in odesystem
@@ -22,7 +22,7 @@ Ffun = @TTI_Dif_Eq;
 %% Run Simulation
 
 Time= t0:0.01:tf;
-[t,y]=ode45(Ffun,Time,unknown);
+[t,y]=ode45(Ffun,Time,IC);
 
 %% Plot Results
 
@@ -98,3 +98,16 @@ plot(t,y(:,4)+y(:,8),'-oy')
 hold on
 title('Recovered Total')
 xlim([t0 tf])
+
+% 
+% subplot(2,1,1)
+% plot(t,y(:,9),'-oy')
+% hold on
+% title('Susceptible Traced')
+% xlim([t0 tf])
+% 
+% subplot(2,1,2)
+% plot(t,y(:,10),'-oy')
+% hold on
+% title('Recovered Traced')
+% xlim([t0 tf])

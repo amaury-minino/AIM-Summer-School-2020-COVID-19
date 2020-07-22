@@ -13,26 +13,15 @@ function dx = TTI_Dif_Eq(t,x)
 %x(10)= Recovered with infectious contact
 %x(11)= a, Total number of time conditions
 %x(12)--x(12+a-1)= Time Controls
-%x(12+a)--x(12+2a-1)= Testing control conditions
-%x(12+2a)--x(12+3a-1)= Tracing control conditions
+%x(12+a)--x(12+2a)= Testing control conditions
+%x(12+2a+1)--x(12+3a+1)= Tracing control conditions
 %x(12) to x(12+3a-1) allow us to include timers on our controls.
 
 L=length(x);
-% a=x(11); %number of time changes
- utest=0.1;
- utrace=0.5;
-% if a~=0
-%     for i=0:a-1
-%         tswitch= x(12+i);
-%         if t <tswitch
-%             break
-%         else
-%             utest=x(12+a+i);
-%             utrace=x(12+2*a+i);
-%         end
-%     end
-% end
-% 
+conditions=x(11:L);
+controls= time_switch(conditions,t);
+utest=controls(1);
+utrace=controls(2);
 
 
 v=zeros(9,1); %intiialize testing rates

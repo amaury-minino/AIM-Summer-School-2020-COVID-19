@@ -6,7 +6,7 @@ t0 = 0;
 tf = 100;
 
 %% Initialize
-unknown=[80 1 39 0 0 0 0 0 0 0]; %S E I R
+unknown=[98 1 1 0 0 0 0 0 0 0]; %S E I R
 known=[0 0 0 0]; %S E I R
 contact_trace=[0 0]; %S R
 a= 1;
@@ -69,25 +69,25 @@ hold on
 title('Infected U')
 xlim([t0 tf])
 
-subplot(4,3,8)
+subplot(5,3,8)
 plot(t,y(:,7),'-og')
 hold on
 title('Infected K')
 xlim([t0 tf])
 
-subplot(4,3,9)
+subplot(5,3,9)
 plot(t,y(:,3)+y(:,7),'-og')
 hold on
 title('Infected Total')
 xlim([t0 tf])
 
-subplot(4,3,10)
+subplot(5,3,10)
 plot(t,y(:,4),'-oy')
 hold on
 title('Recovered U')
 xlim([t0 tf])
 
-subplot(4,3,11)
+subplot(5,3,11)
 plot(t,y(:,8),'-oy')
 hold on
 title('Recovered K')

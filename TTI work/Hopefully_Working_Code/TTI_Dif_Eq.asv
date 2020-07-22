@@ -13,26 +13,13 @@ function dx = TTI_Dif_Eq(t,x)
 %x(10)= Recovered with infectious contact
 %x(11)= a, Total number of time conditions
 %x(12)--x(12+a-1)= Time Controls
-%x(12+a)--x(12+2a-1)= Testing control conditions
-%x(12+2a)--x(12+3a-1)= Tracing control conditions
+%x(12+a)--x(12+2a)= Testing control conditions
+%x(12+2a+1)--x(12+3a+1)= Tracing control conditions
 %x(12) to x(12+3a-1) allow us to include timers on our controls.
 
 L=length(x);
-% a=x(11); %number of time changes
- utest=0.1;
- utrace=0;
-% if a~=0
-%     for i=0:a-1
-%         tswitch= x(12+i);
-%         if t <tswitch
-%             break
-%         else
-%             utest=x(12+a+i);
-%             utrace=x(12+2*a+i);
-%         end
-%     end
-% end
-% 
+conditions=x(11:L)
+controls= time_switch(conditions,t);
 
 
 v=zeros(9,1); %intiialize testing rates
@@ -44,7 +31,7 @@ v=zeros(9,1); %intiialize testing rates
     v(6) = utest; %theta, the testing rate of infectives
     v(7) = 1/14; %kappa, the rate non-infect leave isolation      
     v(8) = utrace; %eta, success rate of tracing
-    v(9) = 0.1; %chi, tracing rate    
+    v(9) = 0.5; %chi, tracing rate    
 
 N=0;
 for i=1:4
@@ -63,30 +50,26 @@ dx(2)= v(3)*x(1)*x(3)/N- v(4)*x(2) -v(6)*v(8)*v(9)*x(2); %Exposed Unknown
 dx(3)= v(4)*x(2)- v(5)*x(3)- v(6)*x(3)-v(6)*v(8)*v(9)*x(3);%Infected Unknown
      %(Exposed to infectious) - (Recovery rate)-(testing) -(tracing)
 
-dx(4)=v(5)*x(3)+v(7)*x(8) -v(6)*v(8)*v(9)*x(1);%Recovered Unknown
+dx(4)=v(5)*x(3)+v(7)*x(8) -v(6)*v(8)*v(9)*x(10);%Recovered Unknown
     %(recovery rate) + (isolated return)  -(tracing)   
   
 dx(5) = v(6)*v(8)*v(9)*x(9)-v(7)*x(5);  %Susceptible Known
-        %traced) - (leave
-%        
-% dx(6) = -v(4)*x(6)... %Exposed Known
-%         +v(6)*v(8)*v(9)*x(2);   %contact tracing prob.
+        %(traced) - (leave isolation)
+      
+ dx(6) =v(6)*v(8)*v(9)*x(2) -v(4)*x(6); %Exposed Known
+        %(traced) - (exposed to infectious)
 % 
- dx(7)= v(6)*x(3)- v(5)*x(7); %Infected Known
-         %(testing) - (recovery)   
-        %+ v(4)*x(6)... %exposed to infective while isolated    
+ dx(7)= v(4)*x(6)+v(6)*v(8)*v(9)*x(3) + v(6)*x(3)- v(5)*x(7); %Infected Known
+         %(exposed to infectious)+(traced) +(testing) - (recovery)   
 %        +v(6)*v(8)*v(9)*x(2);   %contact tracing prob.
 % 
- dx(8) = v(5)*x(7)-v(7)*x(8);%Recovered Known 
-        %(recovery) - (leave isolation)   
-%        +v(6)*v(8)*v(9)*x(2);   %contact tracing prob.
+ dx(8) = v(5)*x(7)-v(7)*x(8)+v(6)*v(8)*v(9)*x(10);%Recovered Known 
+        %(recovery) - (leave isolation) +(traced)
    
-% dx(9) =(1-v(3))*v(2)*x(1)*x(3) ... %Susceptible contacts traced
-%       -(v(3)+v(8)*v(6)*v(9) ...
-%        +v(3)*v(2)*x(3))*x(9); 
-%    
-% dx(10)=v(2)*x(3)*x(4) + v(5)*x(3) ... %Recovered contacts traced
-%       -(v(3)+v(8)*v(6)*v(9))*x(1);
-clc
+dx(9) =(1-v(3))*v(2)*x(1)*x(3)-(v(5)+v(8)*v(6)*v(9)+v(3)*v(2)*x(3))*x(9); %Susceptible traced
+       %(growth) - (decay), Susceptible traced
 
+ dx(10)=v(2)*x(3)*x(4) + v(5)*x(3) -(v(3)+v(8)*v(6)*v(9))*x(10); 
+        %(growth) +(growth) - (decay), Recovered  traced
+    
 end

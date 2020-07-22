@@ -15,5 +15,5 @@ tracing= conditions(2*a+2: 3*a +1);
             end
         end
     end
-    values
+    values;
 end

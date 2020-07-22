@@ -6,23 +6,57 @@ t0 = 0;
 tf = 200;
 
 %% Initialize
-unknown=[1000 1 1 0 ]; %S E I R
-known=[0 0 0 0]; %S E I R
-contact_trace=[0 0]; %S R
-a= 2;
-time=[50 100];
-test=[0.1 0.2];
-trace=[0.2  0.3];
-
-IC=[unknown known contact_trace a time test trace]; % S I u tswitch
-% N determined in odesystem
-
+ %%population
+    unknown=[1000 1 1 0 ]; %S E I R
+    known=[0 0 0 0]; %S E I R
+    contact_trace=[0 0]; %S R
+ %%Testing and tracing
+    a= 3; %number time intervals
+    time=[t0 50 100 tf];
+    test_values=[0.1 0.1 0.1]; %testing rate for each time interval
+    trace_values=[1 0.3 0.2 ];% tracing "    "
+    test=0; %initializes testing value
+    trace=0; %initializes testing value
+ %%Initial conditions
+    IC=[unknown known contact_trace test trace]; % S I u tswitch
+    % N determined in odesystem
+    y=IC(:,:);
+    t = [0];
 Ffun = @TTI_Dif_Eq;
 
 %% Run Simulation
 
-Time= t0:0.01:tf;
-[t,y]=ode45(Ffun,Time,IC);
+% Time= t0:0.01:tf;
+% [t,y]=ode45(Ffun,Time,IC);
+
+
+for i = 1:a
+ IC(11) = test_values(i);
+ IC(12) = trace_values(i);
+ time_interval = time(i):0.1:time(i+1);
+ [tx,x_final] = ode45(Ffun,time_interval,IC);
+ IC = x_final(end,:);
+ t = [t(1:end); tx(2:end)];
+ y = [y(1:end,:); x_final(2:end,:)];
+ 
+end
+
+
+% 
+% 
+% for i = 1:s
+%  x0 = x0 + treatment_ic(i,:);
+%  time_interval = time_treatment(i):0.1:time_treatment(i+1);
+%  [tx,x_final] = ode45(@(t,x)Treatement_model_difq(t,x),time_interval,x0);
+%  x0 = x_final(end,:);
+%  
+%  time_result = [time_result(1:end-1); tx];
+%  
+%  results = [results(1:end-1,:); x_final];
+% end
+
+
+
 
 %% Plot Results
 

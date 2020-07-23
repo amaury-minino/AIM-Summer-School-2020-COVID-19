@@ -14,6 +14,7 @@ time=[t0 time_values tf];
     unknown=[1000 1 1 0 ]; %S E I R
     known=[0 0 0 0]; %S E I R
     contact_trace=[0 0]; %S R
+    Total_traced=[0]; %counts all individuals successfully traced
  %%Testing and tracing
     a= length(time)-1; %number time intervals
 %     time=[t0 50 100 tf];
@@ -22,7 +23,7 @@ time=[t0 time_values tf];
     test=0; %initializes testing value
     trace=0; %initializes testing value
  %%Initial conditions
-    IC=[unknown known contact_trace test trace]; % S I u tswitch
+    IC=[unknown known contact_trace test trace Total_traced]; % S I u tswitch
     % N determined in odesystem
     y=IC(:,:);
     t = [0];
@@ -43,7 +44,7 @@ Ffun = @TTI_Dif_Eq;
          t = [t(1:end); tx(2:end)];
          y = [y(1:end,:); x_final(2:end,:)];
     end
-result=y(end,4)+y(end,8);
+result=y;
 % figure(1)
 % subplot(4,3,1)
 % plot(t,y(:,1),'-ob')

@@ -1,0 +1,14 @@
+function final_cost = hospital_capacity(infections)
+%infections is the vector of all hospitalizations
+I= 100; %hospital capacity
+c=2; %geq 1, increased costs when ICUs run out
+m=length(infections)
+final_cost= eye(m);
+    for i=1:m
+        if infections(i) <= I
+            final_cost(i,i)= 1000*infections(i); %price of a hospital bed in USD
+        else
+            final_cost(i,i)=1000*(infections(i)-I) + 1000*c*(I-infections(i)); %increased costs when overflowed
+        end
+    end
+end

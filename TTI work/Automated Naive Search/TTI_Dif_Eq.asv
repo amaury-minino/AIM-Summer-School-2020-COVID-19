@@ -71,6 +71,5 @@ dx(9) =(1-v(3))*v(2)*x(1)*x(3)-(v(5)+v(8)*v(6)*v(9)+v(3)*v(2)*x(3))*x(9); %Susce
 
  dx(10)=v(2)*x(3)*x(4) + v(5)*x(3) -(v(3)+v(8)*v(6)*v(9))*x(10); 
         %(growth) +(growth) - (decay), Recovered  traced
- dx(13) = v(6)*v(8)*v(9)*x(9) +v(6)*v(8)*v(9)*x(2)+v(6)*v(8)*v(9)*x(3) +v(6)*v(8)*v(9)*x(10);
-        %sus + exposed + infect + rec traced
+ dx(13) = v(6)*v(8)*v(9)*x(9) v(6)*v(8)*v(9)*x(2)
 end

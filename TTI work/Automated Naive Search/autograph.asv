@@ -40,10 +40,5 @@ zlabel('Total number of infected')
 xlabel('Testing rates')
 ylabel('Days of testing')
 
-figure(2)
-Surf(X,Y,C)
-hold on
-zlabel('Final Cost USD')
-xlabel('Testing rates')
-ylabel('Days of testing')
+
 end

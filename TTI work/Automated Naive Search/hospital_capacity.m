@@ -1,6 +1,8 @@
 function final_cost = hospital_capacity(infections)
 %returns vector of hospital costs
 %infections is the vector of all hospitalizations
+%We run on the underlying assumption that after I beds are taken, each
+%addiitonal bed costs more,but the first I beds have the same cost
 I= 100; %hospital capacity
 c=2; %geq 1, increased costs when ICUs run out
 m=length(infections);
